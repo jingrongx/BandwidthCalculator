@@ -1,0 +1,44 @@
+<!-- templates/result.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Author: Xu, Jingrong -->
+    <!-- Email: jingrong_xu@dellteam.com-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bandwidth Calculation Results</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>Bandwidth Calculation Results</h1>
+    {% if results %}
+        {% for result in results %}
+        <h2>{{ result.file_name }}</h2>
+        <table>
+            <tr>
+                <th>Service</th>
+                <th>Bandwidth (Kbps)</th>
+            </tr>
+            {% for service, bandwidth in result.bandwidth.items() %}
+            <tr>
+                <td>{{ service }}</td>
+                <td>{{ bandwidth }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endfor %}
+        <form method="post" action="{{ url_for('download_csv') }}">
+            <input type="hidden" name="csv_data" value="{{ csv_data }}">
+            <input type="submit" value="Download CSV">
+        </form>
+    {% else %}
+        <p>No results to display.</p>
+    {% endif %}
+    <a href="{{ url_for('upload_file') }}">Calculate Again</a>
+</body>
+</html>
